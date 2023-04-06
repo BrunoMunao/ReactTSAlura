@@ -1,12 +1,24 @@
-import TaskStyle from './Task.module.scss'
+import { ITask } from "../../../Types/ITask";
+import TaskStyle from "./Task.module.scss";
 
-const Task = (props: {task: string, time: string}) => {
-    return(
-        <li className={TaskStyle.item}>
-            <h3>{props.task}</h3>
-            <span>{props.time}</span>
-        </li>
-    )
+interface Props extends ITask {
+    selectedTask: (selectedTask: ITask) => void;
 }
 
-export default Task
+const Task = ({ task, time, selected, completed, id, selectedTask }: Props) => {
+    return (
+        <li
+            className={`${TaskStyle.item} ${
+                selected ? TaskStyle.itemSelected : ""
+            } ${completed ? TaskStyle.itemCompleted : ""} `}
+            onClick={() => !completed &&
+                selectedTask({ task, time, selected, completed, id })
+            }
+        >
+            <h3>{task}</h3>
+            <span>{time}</span>
+        </li>
+    );
+};
+
+export default Task;
